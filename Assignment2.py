@@ -1,5 +1,6 @@
 import binascii
-import csv
+import os
+
 
 scale = 16 ## equals to hexadecimal
 subnibbles={
@@ -167,10 +168,6 @@ def generateKey(master_key):
 
 # Convert the combined binary string to a hexadecimal string
     K2 = hex(int(K2, 2))[2:]
-
-    print(K1)  # Output: "57b7"
-    print(K2)  # Output: "ad61"
-
     return K1,K2
 
 def AddRoundKey(text2bin,master_key):
@@ -200,227 +197,247 @@ def paddingHex(text):
 
 
 # main
-# text=input("Enter a text: ")
-# if(len(text)<4):
-#      # Calculate the number of '0' characters to add
-#     num_zeros_to_add = 4 - len(text)
-#     text = '0' * num_zeros_to_add + text
-# # convert hex into binary
-# res=bin(int(text, scale))[2:].zfill(16)
+def d1():
+    text=input("Enter a text: ")
+    if(len(text)<4):
+        # Calculate the number of '0' characters to add
+        num_zeros_to_add = 4 - len(text)
+        text = '0' * num_zeros_to_add + text
+    # convert hex into binary
+    res=bin(int(text, scale))[2:].zfill(16)
 
-# # Remove the '0b' prefix if it exists
-# if res.startswith("0b"):
-#     res = res[2:]
+    # Remove the '0b' prefix if it exists
+    if res.startswith("0b"):
+        res = res[2:]
 
-# # Split the binary string into 4-bit nibbles
-# nibbles = [res[i:i+4] for i in range(0, len(res), 4)]       #1001 0000 0011 1011
-# chunk=4
-# matrix = [[int(chunk,2 ) for chunk in nibbles[:2]],         #9 0 3 b
-#           [int(chunk, 2) for chunk in nibbles[2:]]]
-
-
-# Subnibbles(nibbles)
-# # convert list of nibbles into hex
-# h=''
-# for i in range(4):
-#    he=(hex(int(nibbles[i], 2)))
-#    if(he.startswith("0x")):
-#        he=he[2:]
-#    h=h+he
-# print("After subnibbles()",h)
-
-# text=shiftRows(text)
-# print("After ShiftRows()" ,text)
-# matrix1 = [[1, 4], [4, 1]]
-# result=finite_field_matrix_multiplication(matrix1,matrix)
-# flattened_list = [str(item) for sublist in result for item in sublist]
-# # Join the elements into a single string
-# result_string = ''.join(flattened_list)
-# print("After MixColumns",result_string)
+    # Split the binary string into 4-bit nibbles
+    nibbles = [res[i:i+4] for i in range(0, len(res), 4)]       #1001 0000 0011 1011
+    chunk=4
+    matrix = [[int(chunk,2 ) for chunk in nibbles[:2]],         #9 0 3 b
+            [int(chunk, 2) for chunk in nibbles[2:]]]
 
 
+    Subnibbles(nibbles)
+    # convert list of nibbles into hex
+    h=''
+    for i in range(4):
+        he=(hex(int(nibbles[i], 2)))
+        if(he.startswith("0x")):
+            he=he[2:]
+        h=h+he
+    print("After subnibbles()",h)
 
-# key=input("Enter a key: ")
-# # if key is less than 4 bytes, pad it with 0
-# if(len(key)<4):
-#      # Calculate the number of '0' characters to add
-#     num_zeros_to_add = 4 - len(key)
-#     key = '0' * num_zeros_to_add + key
+    text=shiftRows(text)
+    print("After ShiftRows()" ,text)
+    matrix1 = [[1, 4], [4, 1]]
+    result=finite_field_matrix_multiplication(matrix1,matrix)
+    flattened_list = [str(item) for sublist in result for item in sublist]
+    # Join the elements into a single string
+    result_string = ''.join(flattened_list)
+    print("After MixColumns",result_string)
 
 
-# master_key = bin(int(key, 16))[2:].zfill(16)
-# print("master key",master_key)
-# # Remove the '0b' prefix if it exists
-# if master_key.startswith("0b"):
-#     master_key = master_key[2:]
+
+    key=input("Enter a key: ")
+    # if key is less than 4 bytes, pad it with 0
+    if(len(key)<4):
+        # Calculate the number of '0' characters to add
+        num_zeros_to_add = 4 - len(key)
+        key = '0' * num_zeros_to_add + key
 
 
-# k1,k2=generateKey(master_key)
-# print("k1",k1)
-# print("k2",k2)
+    master_key = bin(int(key, 16))[2:].zfill(16)
+    # Remove the '0b' prefix if it exists
+    if master_key.startswith("0b"):
+        master_key = master_key[2:]
+
+
+    k1,k2=generateKey(master_key)
+    print("k1",k1)
+    print("k2",k2)
 
 #================================================
+def d2():
+    text2=input("Enter a text: ")
+    if(len(text2)<4):
+         # Calculate the number of '0' characters to add
+        num_zeros_to_add = 4 - len(text2)
+        text2 = '0' * num_zeros_to_add + text2
+    key1=input("Enter a key: ")
+    # if key is less than 4 bytes, pad it with 0
+    if(len(key1)<4):
+         # Calculate the number of '0' characters to add
+        num_zeros_to_add = 4 - len(key1)
+        key1 = '0' * num_zeros_to_add + key1
 
-# text2=input("Enter a text: ")
-# if(len(text2)<4):
-#      # Calculate the number of '0' characters to add
-#     num_zeros_to_add = 4 - len(text2)
-#     text2 = '0' * num_zeros_to_add + text2
-# key1=input("Enter a key: ")
-# # if key is less than 4 bytes, pad it with 0
-# if(len(key1)<4):
-#      # Calculate the number of '0' characters to add
-#     num_zeros_to_add = 4 - len(key1)
-#     key1 = '0' * num_zeros_to_add + key1
+    master_key = bin(int(key1, 16))[2:].zfill(16)
+    K1,K2=generateKey(master_key)
 
-# master_key = bin(int(key1, 16))[2:].zfill(16)
-# K1,K2=generateKey(master_key)
+    K2=bin(int(K2, scale))[2:].zfill(16)
 
-# K2=bin(int(K2, scale))[2:].zfill(16)
+    text2=shiftRows(text2)
+    print("After ShiftRows()" ,text2)
+    text2bin=bin(int(text2, scale))[2:].zfill(16)
 
-# text2=shiftRows(text2)
-# print("After ShiftRows()" ,text2)
-# text2bin=bin(int(text2, scale))[2:].zfill(16)
-
-# round1=AddRoundKey(text2bin,K2)
-# print("After key round1",round1)
-
-
-# res2=bin(int(round1, scale))[2:].zfill(16)
-# if res2.startswith("0b"):
-#     res2 = res2[2:]
-
-# # Split the binary string into 4-bit nibbles
-# nibbles2 = [res2[i:i+4] for i in range(0, len(res2), 4)]       #1001 0000 0011 1011
-# reverse_substitute_nibbles(nibbles2)
-# # convert list of nibbles into hex
-# h=''
-# for i in range(4):
-#    he=(hex(int(nibbles2[i], 2)))
-#    if(he.startswith("0x")):
-#        he=he[2:]
-#    h=h+he
-# print("After subnibbles()",h)
+    round1=AddRoundKey(text2bin,K2)
+    print("After key round1",round1)
 
 
-# h=shiftRows(h)
-# print("After ShiftRows()" ,h)
+    res2=bin(int(round1, scale))[2:].zfill(16)
+    if res2.startswith("0b"):
+        res2 = res2[2:]
+
+    # Split the binary string into 4-bit nibbles
+    nibbles2 = [res2[i:i+4] for i in range(0, len(res2), 4)]       #1001 0000 0011 1011
+    reverse_substitute_nibbles(nibbles2)
+    # convert list of nibbles into hex
+    h=''
+    for i in range(4):
+       he=(hex(int(nibbles2[i], 2)))
+       if(he.startswith("0x")):
+           he=he[2:]
+       h=h+he
+    print("After subnibbles()",h)
 
 
-# matrix = [[int(h[0],16 ),int(h[1],16)],         #9 0 3 b
-#           [int(h[2], 16),int(h[3],16) ]]
-# matrix1 = [[9, 2], [2, 9]]
-# result=finite_field_matrix_multiplication(matrix1,matrix)
-# result=[[format(cell, 'x') for cell in row] for row in result]
-# flattened_list = [str(item) for sublist in result for item in sublist]
-# # Join the elements into a single string
-# result_string = ''.join(flattened_list)
-# print("After MixColumns",result_string)
+    h=shiftRows(h)
+    print("After ShiftRows()" ,h)
 
-# result_stringBin=bin(int(result_string, scale))[2:].zfill(16)
-# K1=bin(int(K1, scale))[2:].zfill(16)
-# round2=AddRoundKey(result_stringBin,K1)
-# print("After key round2",round2)
 
-# round2=bin(int(round2, scale))[2:].zfill(16)
-# if round2.startswith("0b"):
-#     round2 = round2[2:]
+    matrix = [[int(h[0],16 ),int(h[1],16)],         #9 0 3 b
+              [int(h[2], 16),int(h[3],16) ]]
+    matrix1 = [[9, 2], [2, 9]]
+    result=finite_field_matrix_multiplication(matrix1,matrix)
+    result=[[format(cell, 'x') for cell in row] for row in result]
+    flattened_list = [str(item) for sublist in result for item in sublist]
+    # Join the elements into a single string
+    result_string = ''.join(flattened_list)
+    print("After MixColumns",result_string)
 
-# # Split the binary string into 4-bit nibbles
-# nibbles2 = [round2[i:i+4] for i in range(0, len(round2), 4)]       #1001 0000 0011 1011
-# reverse_substitute_nibbles(nibbles2)
-# # convert list of nibbles into hex
-# h=''
-# for i in range(4):
-#    he=(hex(int(nibbles2[i], 2)))
-#    if(he.startswith("0x")):
-#        he=he[2:]
-#    h=h+he
-# print("After subnibbles()",h)
-# print("Plain Text iss",h)
+    result_stringBin=bin(int(result_string, scale))[2:].zfill(16)
+    K1=bin(int(K1, scale))[2:].zfill(16)
+    round2=AddRoundKey(result_stringBin,K1)
+    print("After key round2",round2)
+
+    round2=bin(int(round2, scale))[2:].zfill(16)
+    if round2.startswith("0b"):
+        round2 = round2[2:]
+
+    # Split the binary string into 4-bit nibbles
+    nibbles2 = [round2[i:i+4] for i in range(0, len(round2), 4)]       #1001 0000 0011 1011
+    reverse_substitute_nibbles(nibbles2)
+    # convert list of nibbles into hex
+    h=''
+    for i in range(4):
+       he=(hex(int(nibbles2[i], 2)))
+       if(he.startswith("0x")):
+           he=he[2:]
+       h=h+he
+    print("After subnibbles()",h)
+    print("Plain Text iss",h)
+
 
 #====================================================================================
 
-key1=input("Enter a key: ")
-paddingHex(key1)
-with open('secret.txt', 'r') as file:
-    # Iterate through each line in the file
-    for line in file:
-        # Split the line into words using spaces as the delimiter
-        words = line.split()
-        
-        # Process each word
-        for word in words:
-            print(word)
-            paddingHex(word)
-            text2=shiftRows(word)
+def d3():
+    key1=input("Enter a key: ")
+    paddingHex(key1)
+    file_path = "output.txt"
+    if os.path.exists(file_path):
+    # If the file exists, delete it
+        os.remove(file_path)
+    print(f"Deleted existing file: {file_path}")
+    with open('secret.txt', 'r') as file:
+        # Iterate through each line in the file
+        for line in file:
+            # Split the line into words using spaces as the delimiter
+            words = line.split()
             
-            master_key = bin(int(key1, 16))[2:].zfill(16)
-            K1,K2=generateKey(master_key)
-            K2=bin(int(K2, scale))[2:].zfill(16)
-            text2bin=bin(int(text2, scale))[2:].zfill(16)
+            # Process each word
+            for word in words:
+                print(word)
+                paddingHex(word)
+                text2=shiftRows(word)
+                
+                master_key = bin(int(key1, 16))[2:].zfill(16)
+                K1,K2=generateKey(master_key)
+                K2=bin(int(K2, scale))[2:].zfill(16)
+                text2bin=bin(int(text2, scale))[2:].zfill(16)
 
-            round1=AddRoundKey(text2bin,K2)
+                round1=AddRoundKey(text2bin,K2)
+                
+
+                res2=bin(int(round1, scale))[2:].zfill(16)
+                if res2.startswith("0b"):
+                    res2 = res2[2:]
+
+                # Split the binary string into 4-bit nibbles
+                nibbles2 = [res2[i:i+4] for i in range(0, len(res2), 4)]       #1001 0000 0011 1011
+                reverse_substitute_nibbles(nibbles2)
+                # convert list of nibbles into hex
+                h=''
+                for i in range(4):
+                    he=(hex(int(nibbles2[i], 2)))
+                    if(he.startswith("0x")):
+                        he=he[2:]
+                    h=h+he
+                
+                h=shiftRows(h)
+                
+                matrix = [[int(h[0],16 ),int(h[1],16)],         #9 0 3 b
+                        [int(h[2], 16),int(h[3],16) ]]
+                matrix1 = [[9, 2], [2, 9]]
+                result=finite_field_matrix_multiplication(matrix1,matrix)
+                result=[[format(cell, 'x') for cell in row] for row in result]
+                flattened_list = [str(item) for sublist in result for item in sublist]
+                # Join the elements into a single string
+                result_string = ''.join(flattened_list)
+                
+                result_stringBin=bin(int(result_string, scale))[2:].zfill(16)
+                K1=bin(int(K1, scale))[2:].zfill(16)
+                round2=AddRoundKey(result_stringBin,K1)
+                
+
+                round2=bin(int(round2, scale))[2:].zfill(16)
+                if round2.startswith("0b"):
+                    round2 = round2[2:]
+
+                # Split the binary string into 4-bit nibbles
+                nibbles2 = [round2[i:i+4] for i in range(0, len(round2), 4)]       #1001 0000 0011 1011
+                reverse_substitute_nibbles(nibbles2)
+                # convert list of nibbles into hex
+                h=''
+                for i in range(4):
+                    he=(hex(int(nibbles2[i], 2)))
+                    if(he.startswith("0x")):
+                        he=he[2:]
+                    h=h+he
             
+                if(h.endswith("00")):
+                    h=h[:-2]
+                print("Plain Text iss",h)
 
-            res2=bin(int(round1, scale))[2:].zfill(16)
-            if res2.startswith("0b"):
-                res2 = res2[2:]
+                hex_bytes = binascii.unhexlify(h)
+                # Convert bytes to ASCII string
+                ascii_string = hex_bytes.decode('utf-8')
+                print(ascii_string)
+                f = open("output.txt", "a")
+                f.write(ascii_string)
+                f.close()
 
-            # Split the binary string into 4-bit nibbles
-            nibbles2 = [res2[i:i+4] for i in range(0, len(res2), 4)]       #1001 0000 0011 1011
-            reverse_substitute_nibbles(nibbles2)
-            # convert list of nibbles into hex
-            h=''
-            for i in range(4):
-                he=(hex(int(nibbles2[i], 2)))
-                if(he.startswith("0x")):
-                    he=he[2:]
-                h=h+he
-            
-            h=shiftRows(h)
-            
-            matrix = [[int(h[0],16 ),int(h[1],16)],         #9 0 3 b
-                    [int(h[2], 16),int(h[3],16) ]]
-            matrix1 = [[9, 2], [2, 9]]
-            result=finite_field_matrix_multiplication(matrix1,matrix)
-            result=[[format(cell, 'x') for cell in row] for row in result]
-            flattened_list = [str(item) for sublist in result for item in sublist]
-            # Join the elements into a single string
-            result_string = ''.join(flattened_list)
-            
-            result_stringBin=bin(int(result_string, scale))[2:].zfill(16)
-            K1=bin(int(K1, scale))[2:].zfill(16)
-            round2=AddRoundKey(result_stringBin,K1)
-            
 
-            round2=bin(int(round2, scale))[2:].zfill(16)
-            if round2.startswith("0b"):
-                round2 = round2[2:]
+# d1()
+# d2()
+# d3()
 
-            # Split the binary string into 4-bit nibbles
-            nibbles2 = [round2[i:i+4] for i in range(0, len(round2), 4)]       #1001 0000 0011 1011
-            reverse_substitute_nibbles(nibbles2)
-            # convert list of nibbles into hex
-            h=''
-            for i in range(4):
-                he=(hex(int(nibbles2[i], 2)))
-                if(he.startswith("0x")):
-                    he=he[2:]
-                h=h+he
-           
-            if(h.endswith("00")):
-                h=h[:-2]
-            print("Plain Text iss",h)
-
-            hex_bytes = binascii.unhexlify(h)
-            # Convert bytes to ASCII string
-            ascii_string = hex_bytes.decode('utf-8')
-            print(ascii_string)
-            f = open("output.txt", "a")
-            f.write(ascii_string)
-            f.close()
-
+# d4()
+# Yes it has flaws 
+# The key is same throughout the process and thus it is vulnerable to attacks
+# The key is not large enough to be secure
+# The key is not random
+# The key is not authenticated
+# The text is also not authenticated and third party can easily esdrop on the communication 
+# and can change the text and send it from his side
 
 
 
