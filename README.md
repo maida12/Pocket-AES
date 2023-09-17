@@ -5,7 +5,8 @@ I have written three CLI programs:
 shown in figure 1. Prompt the user for text block and key inputs, in the form of 16-bit
 hexadecimal numbers. Compute and show the outputs of applying SubNibbles, ShiftRow,
 MixColumns and GenerareRoundKeys on those two. 
-![Uploading Screenshot 2023-09-17 144044.png…]()
+![Screenshot 2023-09-17 144044](https://github.com/maida12/Pocket-AES/assets/81500487/c5c3d79d-fe7b-4f71-bb0a-c72beb570a92)
+
 
 
 # 2.Implemented one block decryption scheme 
