@@ -1,6 +1,7 @@
 # Pocket-AES
 I have written three CLI programs:
-1. I have written a program that demonstrates the working of individual PocketAES encryption stages
+# 1. Working of pocketAES
+ I have written a program that demonstrates the working of individual PocketAES encryption stages
 shown in figure 1. Prompt the user for text block and key inputs, in the form of 16-bit
 hexadecimal numbers. Compute and show the outputs of applying SubNibbles, ShiftRow,
 MixColumns and GenerareRoundKeys on those two. 
